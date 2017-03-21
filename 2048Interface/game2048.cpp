@@ -171,6 +171,21 @@ using namespace std;
     void Game2048::game_end_check()
     {
 
+        if(max==win)
+        {
+          this->display_win_screen();
+
+        }
+
+        else if(response==-1)
+        {
+          this->display_loser_screen();
+        }
+
+        if(response==-1)
+        {
+          exit(0);
+        }
     }
 
     void Game2048::init_grid()
@@ -200,17 +215,159 @@ using namespace std;
     void Game2048::backup_grid()
     {
 
+        for(int i=0;i<4;i++)
+            for(int j=0;j<4;j++)
+                bgrid[i][j]=grid[i][j];
+
+    }
+
+
+    void Game2048::update_grid()
+    {
+        plus=0;
+        User_updating=1;
+
+        switch(control)
+        {
+            case 'w':
+                        for(int i=0;i<4;i++)
+                            for(int j=0;j<3;j++)
+                            {
+                                if(grid[j][i]&&grid[j][i]==grid[j+1][i])
+                                {
+                                    User_updating=0;
+                                    grid[j][i]+=grid[j+1][i];
+                                    grid[j+1][i]=0;
+                                    plus+=(((log2(grid[j][i]))-1)*grid[j][i]);
+                                    score+=(((log2(grid[j][i]))-1)*grid[j][i]);
+
+                                }
+                            }break;
+
+            case 's':
+                        for(int i=0;i<4;i++)
+                            for(int j=3;j>0;j--)
+                            {
+                                if(grid[j][i]&&grid[j][i]==grid[j-1][i])
+                                {
+                                    User_updating=0;
+                                    grid[j][i]+=grid[j-1][i];
+                                    grid[j-1][i]=0;
+                                    plus+=(((log2(grid[j][i]))-1)*grid[j][i]);
+                                    score+=(((log2(grid[j][i]))-1)*grid[j][i]);
+                                }
+                            }break;
+
+            case 'a':
+                        for(int i=0;i<4;i++)
+                            for(int j=0;j<3;j++)
+                            {
+                                if(grid[i][j]&&grid[i][j]==grid[i][j+1])
+                                {
+                                    User_updating=0;
+                                    grid[i][j]+=grid[i][j+1];
+                                    grid[i][j+1]=0;
+                                    plus+=((log2(grid[i][j]))-1)*grid[i][j];
+                                    score+=((log2(grid[i][j]))-1)*grid[i][j];
+                                }
+                            }break;
+
+            case 'd':
+                        for(int i=0;i<4;i++)
+                            for(int j=3;j>0;j--)
+                            {
+                                if(grid[i][j]&&grid[i][j]==grid[i][j-1])
+                                {
+                                    User_updating=0;
+                                    grid[i][j]+=grid[i][j-1];
+                                    grid[i][j-1]=0;
+                                    plus+=((log2(grid[i][j]))-1)*grid[i][j];
+                                    score+=(((log2(grid[i][j]))-1)*grid[i][j]);
+                                }
+                            }break;
+
+
+        }
+
+
+
     }
 
 
     void Game2048::reOrganize_grid()
     {
+        switch(control)
+        {
+            case 'w':
+                        for(int i=0;i<4;i++)
+                            for(int j=0;j<4;j++)
+                            {
+                                if(!grid[j][i])
+                                {
+                                    for(int k=j+1;k<4;k++)
+                                        if(grid[k][i])
+                                        {
+                                            grid[j][i]=grid[k][i];
+                                            grid[k][i]=0;
+                                            break;
+                                        }
+                                }
+
+                            }break;
+
+            case 's':
+                        for(int i=0;i<4;i++)
+                            for(int j=3;j>=0;j--)
+                            {
+                                if(!grid[j][i])
+                                {
+                                    for(int k=j-1;k>=0;k--)
+                                        if(grid[k][i])
+                                        {
+                                            grid[j][i]=grid[k][i];
+                                            grid[k][i]=0;
+                                            break;
+                                        }
+                                }
+
+                            }break;
+            case 'a':
+                        for(int i=0;i<4;i++)
+                            for(int j=0;j<4;j++)
+                            {
+                                if(!grid[i][j])
+                                {
+                                    for(int k=j+1;k<4;k++)
+                                        if(grid[i][k])
+                                        {
+                                            grid[i][j]=grid[i][k];
+                                            grid[i][k]=0;
+                                            break;
+                                        }
+                                }
+
+                            }break;
 
 
+            case 'd':
+                        for(int i=0;i<4;i++)
+                            for(int j=3;j>=0;j--)
+                            {
+                                if(!grid[i][j])
+                                {
+                                    for(int k=j-1;k>=0;k--)
+                                        if(grid[i][k])
+                                        {
+                                            grid[i][j]=grid[i][k];
+                                            grid[i][k]=0;
+                                            break;
+                                        }
+                                }
+
+                            }break;
+
+        }
     }
-
-
-
 
 
     void Game2048::invoque_number()
@@ -236,6 +393,29 @@ using namespace std;
 
     }
 
+    void Game2048::PlusGrandeCase()
+    {
+        for(int i=0;i<4;i++)
+            for(int j=0;j<4;j++)
+                if(grid[i][j]>max)
+                    max=grid[i][j];
+    }
+
+    void Game2048::undo()
+    {
+            for(int i=0;i<4;i++)
+                for(int j=0;j<4;j++)
+                    grid[i][j]=bgrid[i][j];
+    }
+
+
+    void Game2048::display_win_screen(){
+
+    }
+
+    void Game2048::display_loser_screen(){
+
+    }
 
 
 
