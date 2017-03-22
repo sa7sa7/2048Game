@@ -19,6 +19,9 @@ class Game2048: public QObject
 
 
     public:
+      void display_grid();
+      void display_win_screen();
+      void display_loser_screen();
       QString get_0_0();
       QString get_0_1();
       QString get_0_2();
@@ -78,17 +81,16 @@ class Game2048: public QObject
       Q_INVOKABLE void key_press_restart();
       Q_INVOKABLE void key_press_quit();
       void init_grid();
-      void reOrganize_grid();
-      void backup_grid();
-      void invoque_number();
       void update_grid();
+      void reOrganize_grid();
+      void invoque_number();
       void PlusGrandeCase();
+      void backup_grid();
       void undo();
-      void display_grid();
-      void display_win_screen();
-      void display_loser_screen();
      // void set_exec_copie(Game_ai* exec);
 
+      int full();
+      int move_action();
     signals:
         void cellChnaged();
 };

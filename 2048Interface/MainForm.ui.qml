@@ -13,7 +13,6 @@ Rectangle {
     height: 740
     color: "#faf8ef"
 
-
     border.width: 0
     radius: 3
     property alias rowLayout: rowLayout
